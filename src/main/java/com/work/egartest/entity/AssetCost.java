@@ -8,7 +8,7 @@ import java.sql.Date;
 @Entity
 @Data
 @Table(name = "paper_cost", uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"date", "company_id", "cost"})
+        @UniqueConstraint(columnNames = {"date", "company_id"})
 })
 public class PaperCost {
     @Id

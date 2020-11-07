@@ -1,6 +1,7 @@
 package com.work.egartest.controller;
 
 import com.work.egartest.dto.*;
+import com.work.egartest.entity.Company;
 import com.work.egartest.entity.PaperCost;
 import com.work.egartest.service.CompanyService;
 import com.work.egartest.service.PaperCostService;
@@ -53,7 +54,8 @@ public class PaperCostController {
     @PostMapping("update")
     public ResponseEntity updatePaperCost(@RequestBody PaperCostUpdateRequestDto requestDto) {
 
-        if(paperCostService.findById(requestDto.getPaperCostId()) == null || companyService.findByName(requestDto.getCompanyName()) == null) {
+        Company company = companyService.findByName(requestDto.getCompanyName());
+        if(paperCostService.findById(requestDto.getPaperCostId()) == null ||  company == null) {
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
 
@@ -62,7 +64,7 @@ public class PaperCostController {
         paperCost.setId(requestDto.getPaperCostId());
         paperCost.setCost(requestDto.getCost());
         paperCost.setDate(new Date(requestDto.getDate().getTime()));
-        paperCost.setCompany(companyService.findByName(requestDto.getCompanyName()));
+        paperCost.setCompany(company);
 
         paperCostService.update(paperCost);
 
