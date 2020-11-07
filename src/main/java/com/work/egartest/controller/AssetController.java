@@ -1,8 +1,8 @@
 package com.work.egartest.controller;
 
-import com.work.egartest.dto.CompanyAddRequestDto;
-import com.work.egartest.entity.Company;
-import com.work.egartest.service.CompanyService;
+import com.work.egartest.dto.AssetAddRequestDto;
+import com.work.egartest.entity.Asset;
+import com.work.egartest.service.AssetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,26 +13,26 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/egar/company/")
-public class CompanyController {
+public class AssetController {
 
-    private CompanyService companyService;
+    private AssetService assetService;
 
     @Autowired
-    public CompanyController(CompanyService companyService) {
-        this.companyService = companyService;
+    public AssetController(AssetService assetService) {
+        this.assetService = assetService;
     }
 
     @PostMapping("add")
-    public ResponseEntity addCompany(@RequestBody CompanyAddRequestDto requestDto) {
+    public ResponseEntity addAsset(@RequestBody AssetAddRequestDto requestDto) {
 
-        if(companyService.findByName(requestDto.getCompanyName()) != null) {
+        if(assetService.findByName(requestDto.getAssetName()) != null) {
             return new ResponseEntity(HttpStatus.CONFLICT);
         }
 
-        Company company = new Company();
-        company.setName(requestDto.getCompanyName());
+        Asset asset = new Asset();
+        asset.setName(requestDto.getAssetName());
 
-        companyService.save(company);
+        assetService.save(asset);
 
         return new ResponseEntity(HttpStatus.OK);
     }

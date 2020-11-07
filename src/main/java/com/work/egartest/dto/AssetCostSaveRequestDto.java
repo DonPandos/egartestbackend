@@ -5,8 +5,8 @@ import lombok.Data;
 import java.util.Date;
 
 @Data
-public class PaperCostSaveRequestDto {
+public class AssetCostSaveRequestDto {
     private Date date;
-    private String companyName;
+    private String assetName;
     private Integer cost;
 }

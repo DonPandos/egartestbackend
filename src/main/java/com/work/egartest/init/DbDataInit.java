@@ -1,11 +1,9 @@
 package com.work.egartest.init;
 
-import com.work.egartest.entity.Company;
-import com.work.egartest.entity.PaperCost;
-import com.work.egartest.repository.CompanyRepository;
-import com.work.egartest.repository.PaperCostRepository;
-import com.work.egartest.service.CompanyService;
-import com.work.egartest.service.PaperCostService;
+import com.work.egartest.entity.Asset;
+import com.work.egartest.entity.AssetCost;
+import com.work.egartest.service.AssetService;
+import com.work.egartest.service.AssetCostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -16,35 +14,35 @@ import java.sql.Date;
 @Component
 public class DbDataInit implements ApplicationRunner {
 
-    private PaperCostService paperCostService;
-    private CompanyService companyService;
+    private AssetCostService assetCostService;
+    private AssetService assetService;
 
     @Autowired
-    public DbDataInit(PaperCostService paperCostService, CompanyService companyService){
-        this.companyService = companyService;
-        this.paperCostService = paperCostService;
+    public DbDataInit(AssetCostService assetCostService, AssetService assetService){
+        this.assetCostService = assetCostService;
+        this.assetService = assetService;
     }
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        Company company = new Company();
-        company.setName("Газпром");
-        companyService.save(company);
-        company = new Company();
-        company.setName("Автоваз");
-        companyService.save(company);
-        company = new Company();
-        company.setName("Сбербанк");
-        companyService.save(company);
+        Asset asset = new Asset();
+        asset.setName("Газпром");
+        assetService.save(asset);
+        asset = new Asset();
+        asset.setName("Автоваз");
+        assetService.save(asset);
+        asset = new Asset();
+        asset.setName("Сбербанк");
+        assetService.save(asset);
 
-        PaperCost paperCost = new PaperCost();
-        paperCost.setCompany(company);
-        paperCost.setCost(2000);
-        paperCost.setDate(new Date(new java.util.Date().getTime()));
-        paperCostService.save(paperCost);
+        AssetCost assetCost = new AssetCost();
+        assetCost.setAsset(asset);
+        assetCost.setCost(2000);
+        assetCost.setDate(new Date(new java.util.Date().getTime()));
+        assetCostService.save(assetCost);
 
-//        PaperCost result;
-//        Optional<PaperCost> paperCost1 = paperCostRepository.findById(4L);
+//        AssetCost result;
+//        Optional<AssetCost> paperCost1 = paperCostRepository.findById(4L);
 //        result = paperCost1.get();
 //        System.out.println(result.getCompany().getName());
     }

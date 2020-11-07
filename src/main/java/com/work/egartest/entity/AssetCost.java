@@ -7,21 +7,21 @@ import java.sql.Date;
 
 @Entity
 @Data
-@Table(name = "paper_cost", uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"date", "company_id"})
+@Table(name = "asset_cost", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"date", "asset_id"})
 })
-public class PaperCost {
+public class AssetCost {
     @Id
     @GeneratedValue
-    @Column(name = "paper_cost_id", nullable = false)
+    @Column(name = "asset_cost_id", nullable = false)
     private Long id;
 
     @Column(name = "date", nullable = false)
     private Date date;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "company_id")
-    private Company company;
+    @JoinColumn(name = "asset_id")
+    private Asset asset;
 
     @Column(name = "cost", nullable = false)
     private Integer cost;

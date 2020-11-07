@@ -6,14 +6,14 @@ import javax.persistence.*;
 
 @Data
 @Entity
-@Table(name = "company", uniqueConstraints = {
+@Table(name = "asset", uniqueConstraints = {
         @UniqueConstraint(columnNames = {"name"})
 })
-public class Company {
+public class Asset {
 
     @Id
     @GeneratedValue
-    @Column(name = "company_id", nullable = false)
+    @Column(name = "asset_id", nullable = false)
     private Long id;
 
     @Column(name = "name")

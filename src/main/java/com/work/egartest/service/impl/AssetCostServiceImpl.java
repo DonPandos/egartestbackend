@@ -1,54 +1,53 @@
 package com.work.egartest.service.impl;
 
-import com.work.egartest.entity.PaperCost;
-import com.work.egartest.repository.PaperCostRepository;
-import com.work.egartest.service.PaperCostService;
+import com.work.egartest.entity.AssetCost;
+import com.work.egartest.repository.AssetCostRepository;
+import com.work.egartest.service.AssetCostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 @Service
-public class PaperCostServiceImpl implements PaperCostService {
-    private PaperCostRepository paperCostRepository;
+public class AssetCostServiceImpl implements AssetCostService {
+    private AssetCostRepository assetCostRepository;
 
     @Autowired
-    public PaperCostServiceImpl(PaperCostRepository paperCostRepository) {
-        this.paperCostRepository = paperCostRepository;
+    public AssetCostServiceImpl(AssetCostRepository assetCostRepository) {
+        this.assetCostRepository = assetCostRepository;
     }
 
     @Override
-    public PaperCost findById(Long id) {
-        return paperCostRepository.findById(id).get();
+    public AssetCost findById(Long id) {
+        return assetCostRepository.findById(id).get();
     }
 
     @Override
-    public Long save(PaperCost paperCost) {
-        return paperCostRepository.save(paperCost).getId();
+    public Long save(AssetCost assetCost) {
+        return assetCostRepository.save(assetCost).getId();
     }
 
     @Override
-    public void update(PaperCost updatedPaperCost) {
-        PaperCost paperCost = paperCostRepository.findById(updatedPaperCost.getId()).get();
+    public void update(AssetCost updatedAssetCost) {
+        AssetCost paperCost = assetCostRepository.findById(updatedAssetCost.getId()).get();
 
-        paperCost.setDate(updatedPaperCost.getDate());
-        paperCost.setCompany(updatedPaperCost.getCompany());
-        paperCost.setCost(updatedPaperCost.getCost());
+        paperCost.setDate(updatedAssetCost.getDate());
+        paperCost.setAsset(updatedAssetCost.getAsset());
+        paperCost.setCost(updatedAssetCost.getCost());
 
-        paperCostRepository.save(paperCost);
+        assetCostRepository.save(paperCost);
     }
 
     @Override
-    public List<PaperCost> getAll() {
-        return StreamSupport.stream(paperCostRepository.findAll().spliterator(), false).collect(Collectors.toList());
+    public List<AssetCost> getAll() {
+        return StreamSupport.stream(assetCostRepository.findAll().spliterator(), false).collect(Collectors.toList());
     }
 
     @Override
     public void delete(Long id) {
-        paperCostRepository.deleteById(id);
+        assetCostRepository.deleteById(id);
     }
 
 }

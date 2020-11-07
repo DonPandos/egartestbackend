@@ -1,22 +1,22 @@
 package com.work.egartest.dto;
 
-import com.work.egartest.entity.PaperCost;
+import com.work.egartest.entity.AssetCost;
 import lombok.Data;
 
 import java.sql.Date;
 
 @Data
-public class UserPaperCost {
+public class UserAssetCost {
 
     private Long id;
     private Date date;
     private Integer cost;
-    private String companyName;
+    private String assetName;
 
-    public UserPaperCost(PaperCost paperCost) {
-        this.id = paperCost.getId();
-        this.date = paperCost.getDate();
-        this.cost = paperCost.getCost();
-        this.companyName = paperCost.getCompany().getName();
+    public UserAssetCost(AssetCost assetCost) {
+        this.id = assetCost.getId();
+        this.date = assetCost.getDate();
+        this.cost = assetCost.getCost();
+        this.assetName = assetCost.getAsset().getName();
     }
 }

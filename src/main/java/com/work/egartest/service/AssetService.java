@@ -1,9 +1,9 @@
 package com.work.egartest.service;
 
-import com.work.egartest.entity.Company;
+import com.work.egartest.entity.Asset;
 
-public interface CompanyService {
-    Long save(Company company);
-    Company findById(Long id);
-    Company findByName(String name);
+public interface AssetService {
+    Long save(Asset asset);
+    Asset findById(Long id);
+    Asset findByName(String name);
 }

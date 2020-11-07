@@ -1,16 +1,15 @@
 package com.work.egartest.service;
 
-import com.work.egartest.entity.PaperCost;
+import com.work.egartest.entity.AssetCost;
 import org.springframework.stereotype.Service;
 
-import java.awt.print.Paper;
 import java.util.List;
 
 @Service
-public interface PaperCostService {
-    PaperCost findById(Long id);
-    Long save(PaperCost paperCost);
-    void update(PaperCost paperCost);
-    List<PaperCost> getAll();
+public interface AssetCostService {
+    AssetCost findById(Long id);
+    Long save(AssetCost assetCost);
+    void update(AssetCost assetCost);
+    List<AssetCost> getAll();
     void delete(Long id);
 }

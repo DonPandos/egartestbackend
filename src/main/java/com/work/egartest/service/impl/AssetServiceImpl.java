@@ -1,32 +1,32 @@
 package com.work.egartest.service.impl;
 
-import com.work.egartest.entity.Company;
-import com.work.egartest.repository.CompanyRepository;
-import com.work.egartest.service.CompanyService;
+import com.work.egartest.entity.Asset;
+import com.work.egartest.repository.AssetRepository;
+import com.work.egartest.service.AssetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class CompanyServiceImpl implements CompanyService {
+public class AssetServiceImpl implements AssetService {
 
-    private CompanyRepository companyRepository;
+    private AssetRepository assetRepository;
 
     @Autowired
-    public CompanyServiceImpl(CompanyRepository companyRepository){
-        this.companyRepository = companyRepository;
+    public AssetServiceImpl(AssetRepository assetRepository){
+        this.assetRepository = assetRepository;
     }
 
     @Override
-    public Long save(Company company) {
-        return companyRepository.save(company).getId();
+    public Long save(Asset asset) {
+        return assetRepository.save(asset).getId();
     }
 
     @Override
-    public Company findById(Long id) {
-        return companyRepository.findById(id).get();
+    public Asset findById(Long id) {
+        return assetRepository.findById(id).get();
     }
 
-    public Company findByName(String name) {
-        return companyRepository.findByName(name);
+    public Asset findByName(String name) {
+        return assetRepository.findByName(name);
     }
 }

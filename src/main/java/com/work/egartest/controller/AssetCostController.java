@@ -1,10 +1,10 @@
 package com.work.egartest.controller;
 
 import com.work.egartest.dto.*;
-import com.work.egartest.entity.Company;
-import com.work.egartest.entity.PaperCost;
-import com.work.egartest.service.CompanyService;
-import com.work.egartest.service.PaperCostService;
+import com.work.egartest.entity.Asset;
+import com.work.egartest.entity.AssetCost;
+import com.work.egartest.service.AssetService;
+import com.work.egartest.service.AssetCostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,67 +17,67 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/egar/papercost/")
-public class PaperCostController {
-    private PaperCostService paperCostService;
-    private CompanyService companyService;
+public class AssetCostController {
+    private AssetCostService assetCostService;
+    private AssetService assetService;
 
     @Autowired
-    public PaperCostController(PaperCostService paperCostService, CompanyService companyService) {
-        this.paperCostService = paperCostService;
-        this.companyService = companyService;
+    public AssetCostController(AssetCostService assetCostService, AssetService assetService) {
+        this.assetCostService = assetCostService;
+        this.assetService = assetService;
     }
 
     @GetMapping("all")
-    public ResponseEntity<PaperCostAllDto> getAll() {
-        PaperCostAllDto result = new PaperCostAllDto();
-        result.setPaperCostList(paperCostService.getAll().stream().map(item -> new UserPaperCost(item)).collect(Collectors.toList()));
+    public ResponseEntity<AssetCostAllDto> getAll() {
+        AssetCostAllDto result = new AssetCostAllDto();
+        result.setAssetCostList(assetCostService.getAll().stream().map(item -> new UserAssetCost(item)).collect(Collectors.toList()));
 
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @PostMapping("save")
-    public ResponseEntity savePaperCost(@RequestBody PaperCostSaveRequestDto requestDto) {
-        if(companyService.findByName(requestDto.getCompanyName()) == null) {
+    public ResponseEntity savePaperCost(@RequestBody AssetCostSaveRequestDto requestDto) {
+        if(assetService.findByName(requestDto.getAssetName()) == null) {
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
-        PaperCost paperCost = new PaperCost();
+        AssetCost assetCost = new AssetCost();
 
-        paperCost.setDate(new Date(requestDto.getDate().getTime()));
-        paperCost.setCost(requestDto.getCost());
-        paperCost.setCompany(companyService.findByName(requestDto.getCompanyName()));
+        assetCost.setDate(new Date(requestDto.getDate().getTime()));
+        assetCost.setCost(requestDto.getCost());
+        assetCost.setAsset(assetService.findByName(requestDto.getAssetName()));
 
-        paperCostService.save(paperCost);
+        assetCostService.save(assetCost);
 
         return new ResponseEntity(HttpStatus.OK);
     }
 
     @PostMapping("update")
-    public ResponseEntity updatePaperCost(@RequestBody PaperCostUpdateRequestDto requestDto) {
+    public ResponseEntity updatePaperCost(@RequestBody AssetCostUpdateRequestDto requestDto) {
 
-        Company company = companyService.findByName(requestDto.getCompanyName());
-        if(paperCostService.findById(requestDto.getPaperCostId()) == null ||  company == null) {
+        Asset asset = assetService.findByName(requestDto.getAssetName());
+        if(assetCostService.findById(requestDto.getAssetCostId()) == null ||  asset == null) {
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
 
-        PaperCost paperCost = new PaperCost();
+        AssetCost assetCost = new AssetCost();
 
-        paperCost.setId(requestDto.getPaperCostId());
-        paperCost.setCost(requestDto.getCost());
-        paperCost.setDate(new Date(requestDto.getDate().getTime()));
-        paperCost.setCompany(company);
+        assetCost.setId(requestDto.getAssetCostId());
+        assetCost.setCost(requestDto.getCost());
+        assetCost.setDate(new Date(requestDto.getDate().getTime()));
+        assetCost.setAsset(asset);
 
-        paperCostService.update(paperCost);
+        assetCostService.update(assetCost);
 
         return new ResponseEntity(HttpStatus.OK);
     }
 
     @PostMapping("delete")
-    public ResponseEntity deletePaperCost(@RequestBody PaperCostDeleteRequestDto requestDto) {
-        if(paperCostService.findById(requestDto.getPaperCostId()) == null) {
+    public ResponseEntity deletePaperCost(@RequestBody AssetCostDeleteRequestDto requestDto) {
+        if(assetCostService.findById(requestDto.getAssetCostId()) == null) {
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
 
-        paperCostService.delete(requestDto.getPaperCostId());
+        assetCostService.delete(requestDto.getAssetCostId());
         return new ResponseEntity(HttpStatus.OK);
     }
 
@@ -86,7 +86,7 @@ public class PaperCostController {
         DateToCostChartResponseDto response = new DateToCostChartResponseDto();
 
         Map<Date, Integer> chartData = new HashMap<>();
-        paperCostService.getAll().stream().map(item -> chartData.put(item.getDate(), item.getCost()));
+        assetCostService.getAll().stream().map(item -> chartData.put(item.getDate(), item.getCost()));
         response.setChartData(chartData);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
