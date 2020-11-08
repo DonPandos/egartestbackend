@@ -1,6 +1,12 @@
 package com.work.egartest.controller;
 
 import com.work.egartest.dto.*;
+import com.work.egartest.dto.request.AssetCostDeleteRequestDto;
+import com.work.egartest.dto.request.AssetCostSaveRequestDto;
+import com.work.egartest.dto.request.AssetCostUpdateRequestDto;
+import com.work.egartest.dto.request.DateToCostChartRequestDto;
+import com.work.egartest.dto.response.AssetCostAllResponseDto;
+import com.work.egartest.dto.response.DateToCostChartResponseDto;
 import com.work.egartest.entity.Asset;
 import com.work.egartest.entity.AssetCost;
 import com.work.egartest.service.AssetService;
@@ -16,7 +22,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/egar/papercost/")
+@RequestMapping("/api/egar/assetcost/")
 public class AssetCostController {
     private AssetCostService assetCostService;
     private AssetService assetService;
@@ -28,8 +34,8 @@ public class AssetCostController {
     }
 
     @GetMapping("all")
-    public ResponseEntity<AssetCostAllDto> getAll() {
-        AssetCostAllDto result = new AssetCostAllDto();
+    public ResponseEntity<AssetCostAllResponseDto> getAll() {
+        AssetCostAllResponseDto result = new AssetCostAllResponseDto();
         result.setAssetCostList(assetCostService.getAll().stream().map(item -> new UserAssetCost(item)).collect(Collectors.toList()));
 
         return new ResponseEntity<>(result, HttpStatus.OK);
@@ -37,14 +43,14 @@ public class AssetCostController {
 
     @PostMapping("save")
     public ResponseEntity savePaperCost(@RequestBody AssetCostSaveRequestDto requestDto) {
-        if(assetService.findByName(requestDto.getAssetName()) == null) {
+        if(assetService.findById(requestDto.getAssetId()) == null) {
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
         AssetCost assetCost = new AssetCost();
 
         assetCost.setDate(new Date(requestDto.getDate().getTime()));
         assetCost.setCost(requestDto.getCost());
-        assetCost.setAsset(assetService.findByName(requestDto.getAssetName()));
+        assetCost.setAsset(assetService.findById(requestDto.getAssetId()));
 
         assetCostService.save(assetCost);
 
@@ -53,18 +59,16 @@ public class AssetCostController {
 
     @PostMapping("update")
     public ResponseEntity updatePaperCost(@RequestBody AssetCostUpdateRequestDto requestDto) {
-
-        Asset asset = assetService.findByName(requestDto.getAssetName());
-        if(assetCostService.findById(requestDto.getAssetCostId()) == null ||  asset == null) {
+        if(assetCostService.findById(requestDto.getAssetCostId()) == null) {
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
 
         AssetCost assetCost = new AssetCost();
 
         assetCost.setId(requestDto.getAssetCostId());
-        assetCost.setCost(requestDto.getCost());
-        assetCost.setDate(new Date(requestDto.getDate().getTime()));
-        assetCost.setAsset(asset);
+        if(requestDto.getCost() != null) assetCost.setCost(requestDto.getCost());
+        if(requestDto.getDate() != null) assetCost.setDate(new Date(requestDto.getDate().getTime()));
+        if(requestDto.getAssetId() != null)  assetCost.setAsset(assetService.findById(requestDto.getAssetId()));
 
         assetCostService.update(assetCost);
 
@@ -81,13 +85,10 @@ public class AssetCostController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    @GetMapping("date-to-cost-chart-data")
-    public ResponseEntity<DateToCostChartResponseDto> getDateToCostChartData() {
+    @PostMapping("date-to-cost-chart-data")
+    public ResponseEntity<DateToCostChartResponseDto> getDateToCostChartData(@RequestBody DateToCostChartRequestDto requestDto) {
         DateToCostChartResponseDto response = new DateToCostChartResponseDto();
-
-        Map<Date, Integer> chartData = new HashMap<>();
-        assetCostService.getAll().stream().map(item -> chartData.put(item.getDate(), item.getCost()));
-        response.setChartData(chartData);
+        response.setChartData(assetCostService.getChartData(requestDto.getAssetId()));
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }

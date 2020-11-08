@@ -1,4 +1,4 @@
-package com.work.egartest.dto;
+package com.work.egartest.dto.request;
 
 import lombok.Data;
 

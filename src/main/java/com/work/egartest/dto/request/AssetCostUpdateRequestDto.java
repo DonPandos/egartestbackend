@@ -1,13 +1,18 @@
-package com.work.egartest.dto;
+package com.work.egartest.dto.request;
 
 import lombok.Data;
+import org.springframework.lang.Nullable;
 
 import java.util.Date;
 
 @Data
 public class AssetCostUpdateRequestDto {
+    @Nullable
     private Long assetCostId;
+    @Nullable
     private Date date;
-    private String assetName;
+    @Nullable
+    private Long assetId;
+    @Nullable
     private Integer cost;
 }

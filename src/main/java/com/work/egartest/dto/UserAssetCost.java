@@ -11,12 +11,12 @@ public class UserAssetCost {
     private Long id;
     private Date date;
     private Integer cost;
-    private String assetName;
+    private Long assetId;
 
     public UserAssetCost(AssetCost assetCost) {
         this.id = assetCost.getId();
         this.date = assetCost.getDate();
         this.cost = assetCost.getCost();
-        this.assetName = assetCost.getAsset().getName();
+        this.assetId = assetCost.getAsset().getId();
     }
 }

@@ -1,12 +1,13 @@
 package com.work.egartest.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
-import java.util.Date;
+import java.sql.Date;
 
 @Data
-public class AssetCostSaveRequestDto {
+@AllArgsConstructor
+public class ChartDataItem {
     private Date date;
-    private String assetName;
     private Integer cost;
 }

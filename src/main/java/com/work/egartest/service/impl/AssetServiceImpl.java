@@ -6,6 +6,10 @@ import com.work.egartest.service.AssetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+
 @Service
 public class AssetServiceImpl implements AssetService {
 
@@ -28,5 +32,10 @@ public class AssetServiceImpl implements AssetService {
 
     public Asset findByName(String name) {
         return assetRepository.findByName(name);
+    }
+
+    @Override
+    public List<Asset> getAll() {
+        return StreamSupport.stream(assetRepository.findAll().spliterator(), false).collect(Collectors.toList());
     }
 }

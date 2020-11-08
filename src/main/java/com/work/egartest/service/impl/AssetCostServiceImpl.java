@@ -1,12 +1,17 @@
 package com.work.egartest.service.impl;
 
+import com.work.egartest.dto.ChartDataItem;
 import com.work.egartest.entity.AssetCost;
 import com.work.egartest.repository.AssetCostRepository;
 import com.work.egartest.service.AssetCostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -31,13 +36,13 @@ public class AssetCostServiceImpl implements AssetCostService {
 
     @Override
     public void update(AssetCost updatedAssetCost) {
-        AssetCost paperCost = assetCostRepository.findById(updatedAssetCost.getId()).get();
+        AssetCost assetCost = assetCostRepository.findById(updatedAssetCost.getId()).get();
 
-        paperCost.setDate(updatedAssetCost.getDate());
-        paperCost.setAsset(updatedAssetCost.getAsset());
-        paperCost.setCost(updatedAssetCost.getCost());
+        if(updatedAssetCost.getCost() != null) assetCost.setCost(updatedAssetCost.getCost());
+        if(updatedAssetCost.getDate() != null) assetCost.setDate(updatedAssetCost.getDate());
+        if(updatedAssetCost.getAsset() != null) assetCost.setAsset(updatedAssetCost.getAsset());
 
-        assetCostRepository.save(paperCost);
+        assetCostRepository.save(assetCost);
     }
 
     @Override
@@ -48,6 +53,14 @@ public class AssetCostServiceImpl implements AssetCostService {
     @Override
     public void delete(Long id) {
         assetCostRepository.deleteById(id);
+    }
+
+    @Override
+    public List<ChartDataItem> getChartData(Long id) {
+        List<AssetCost> assetCosts = assetCostRepository.findByAssetId(id);
+        List<ChartDataItem> result = new ArrayList<>();
+        assetCosts.forEach(item -> result.add(new ChartDataItem(item.getDate(), item.getCost())));
+        return result;
     }
 
 }
